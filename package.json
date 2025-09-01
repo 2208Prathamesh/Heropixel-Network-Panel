@@ -1,0 +1,37 @@
+{
+  "name": "heropixel-network-panel",
+  "version": "1.0.0",
+  "description": "Complete full-stack network panel with authentication, chat, and file storage",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^17.2.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.10.1",
+    "socket.io": "^4.7.4",
+    "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "sqlite",
+    "authentication",
+    "chat",
+    "file-storage"
+  ],
+  "author": "HeroPixel Network",
+  "license": "MIT"
+}

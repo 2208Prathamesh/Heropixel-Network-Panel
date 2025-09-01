@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  heropixel-network-panel:
+    build: .
+    container_name: heropixel-network-panel
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./database.sqlite:/app/database.sqlite
+    environment:
+      - NODE_ENV=production
+      - EMAIL_USER=${EMAIL_USER:-your-email@gmail.com}
+      - EMAIL_PASS=${EMAIL_PASS:-your-app-password}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
