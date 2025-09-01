@@ -1,0 +1,37 @@
+</div>
+    <footer class="bg-gray-800 text-center py-4 mt-auto">
+        <p class="text-gray-400">&copy; 2024 HeroPixel Network Panel. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+            }
+        }
+
+        // Close mobile menu when clicking overlay
+        document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('overlay');
+            if (overlay) {
+                overlay.addEventListener('click', toggleMobileMenu);
+            }
+        });
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert-auto-hide');
+            alerts.forEach(alert => {
+                alert.style.transition = 'opacity 0.5s ease-out';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
