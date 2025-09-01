@@ -1,0 +1,368 @@
+<%- include('partials/header', {title: 'Admin Panel - HeroPixel Network'}) %>
+
+<div class="flex min-h-screen bg-gray-900">
+    <%- include('partials/sidebar', {user: user, currentPage: 'admin'}) %>
+    
+    <!-- Main Content -->
+    <div class="flex-1 lg:ml-64">
+        <div class="p-8">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-white mb-2">Admin Panel</h1>
+                <p class="text-gray-400">Manage users, messages, and files</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-blue-500 bg-opacity-20 rounded-lg">
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-400">Total Users</p>
+                            <p class="text-2xl font-bold text-white"><%= users.length %></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-green-500 bg-opacity-20 rounded-lg">
+                            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-400">Total Messages</p>
+                            <p class="text-2xl font-bold text-white"><%= messages.length %></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-purple-500 bg-opacity-20 rounded-lg">
+                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-400">Total Files</p>
+                            <p class="text-2xl font-bold text-white"><%= files.length %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="mb-6">
+                <nav class="flex space-x-8">
+                    <button onclick="showTab('users')" id="users-tab" 
+                            class="tab-button py-2 px-1 border-b-2 font-medium text-sm border-blue-500 text-blue-400">
+                        Users Management
+                    </button>
+                    <button onclick="showTab('messages')" id="messages-tab"
+                            class="tab-button py-2 px-1 border-b-2 font-medium text-sm border-transparent text-gray-400 hover:text-gray-300">
+                        Messages
+                    </button>
+                    <button onclick="showTab('files')" id="files-tab"
+                            class="tab-button py-2 px-1 border-b-2 font-medium text-sm border-transparent text-gray-400 hover:text-gray-300">
+                        Files
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="users" class="tab-content">
+                <div class="bg-gray-800 rounded-lg border border-gray-700">
+                    <div class="px-6 py-4 border-b border-gray-700">
+                        <h3 class="text-lg font-semibold text-white">User Management</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-750">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Created</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-gray-800 divide-y divide-gray-700">
+                                <% users.forEach(function(userItem) { %>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                                <span class="text-white text-sm font-medium">
+                                                    <%= userItem.username.charAt(0).toUpperCase() %>
+                                                </span>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-white"><%= userItem.username %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><%= userItem.email %></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= userItem.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800' %>">
+                                            <%= userItem.role %>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= userItem.verified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                                            <%= userItem.verified ? 'Verified' : 'Unverified' %>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                        <%= new Date(userItem.created_at).toLocaleDateString() %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <% if (userItem.id !== user.id) { %>
+                                        <select onchange="changeUserRole(<%= userItem.id %>, this.value)" 
+                                                class="mr-2 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
+                                            <option value="user" <%= userItem.role === 'user' ? 'selected' : '' %>>User</option>
+                                            <option value="admin" <%= userItem.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                                        </select>
+                                        <button onclick="deleteUser(<%= userItem.id %>)" 
+                                                class="px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded transition-colors">
+                                            Delete
+                                        </button>
+                                        <% } else { %>
+                                        <span class="text-xs text-gray-400">Current User</span>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Tab -->
+            <div id="messages" class="tab-content hidden">
+                <div class="bg-gray-800 rounded-lg border border-gray-700">
+                    <div class="px-6 py-4 border-b border-gray-700">
+                        <h3 class="text-lg font-semibold text-white">Message Management</h3>
+                    </div>
+                    <div class="p-6">
+                        <% if (messages.length === 0) { %>
+                        <div class="text-center py-8">
+                            <svg class="mx-auto h-12 w-12 text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                            <p class="text-gray-400">No messages found</p>
+                        </div>
+                        <% } else { %>
+                        <div class="space-y-4 max-h-96 overflow-y-auto">
+                            <% messages.forEach(function(message) { %>
+                            <div class="bg-gray-700 rounded-lg p-4 border border-gray-600">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="font-medium text-blue-400"><%= message.username %></span>
+                                        <span class="text-xs text-gray-400">
+                                            <%= new Date(message.timestamp).toLocaleString() %>
+                                        </span>
+                                    </div>
+                                    <button onclick="deleteMessage(<%= message.id %>)" 
+                                            class="px-2 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded transition-colors">
+                                        Delete
+                                    </button>
+                                </div>
+                                <p class="text-gray-300 break-words"><%= message.message %></p>
+                            </div>
+                            <% }); %>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Files Tab -->
+            <div id="files" class="tab-content hidden">
+                <div class="bg-gray-800 rounded-lg border border-gray-700">
+                    <div class="px-6 py-4 border-b border-gray-700">
+                        <h3 class="text-lg font-semibold text-white">File Management</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-750">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">File</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Owner</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Size</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Visibility</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Upload Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-gray-800 divide-y divide-gray-700">
+                                <% files.forEach(function(file) { %>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <svg class="w-6 h-6 text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                            </svg>
+                                            <div class="text-sm font-medium text-white"><%= file.original_name %></div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><%= file.username %></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                        <%= (file.filesize / (1024 * 1024)).toFixed(2) %> MB
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= file.visibility === 'public' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+                                            <%= file.visibility %>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                        <%= new Date(file.upload_date).toLocaleDateString() %>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="/download/<%= file.id %>" 
+                                           class="mr-2 px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors">
+                                            Download
+                                        </a>
+                                        <button onclick="deleteFileAdmin(<%= file.id %>)" 
+                                                class="px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded transition-colors">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab functionality
+    function showTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.add('hidden');
+        });
+        
+        document.getElementById(tabName).classList.remove('hidden');
+        
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('border-blue-500', 'text-blue-400');
+            button.classList.add('border-transparent', 'text-gray-400');
+        });
+        
+        const activeTab = document.getElementById(tabName + '-tab');
+        activeTab.classList.remove('border-transparent', 'text-gray-400');
+        activeTab.classList.add('border-blue-500', 'text-blue-400');
+    }
+    
+    // Change user role
+    async function changeUserRole(userId, newRole) {
+        if (!confirm(`Are you sure you want to change this user's role to ${newRole}?`)) {
+            location.reload(); // Reset the select
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/admin/user/${userId}/role`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ role: newRole })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                location.reload();
+            } else {
+                alert('Failed to update role: ' + (result.error || 'Unknown error'));
+                location.reload();
+            }
+        } catch (error) {
+            alert('Failed to update role: ' + error.message);
+            location.reload();
+        }
+    }
+    
+    // Delete user
+    async function deleteUser(userId) {
+        if (!confirm('Are you sure you want to delete this user? This will also delete all their messages and files. This action cannot be undone.')) {
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/admin/user/${userId}/delete`, {
+                method: 'POST'
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                location.reload();
+            } else {
+                alert('Failed to delete user: ' + (result.error || 'Unknown error'));
+            }
+        } catch (error) {
+            alert('Failed to delete user: ' + error.message);
+        }
+    }
+    
+    // Delete message
+    async function deleteMessage(messageId) {
+        if (!confirm('Are you sure you want to delete this message?')) {
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/admin/message/${messageId}/delete`, {
+                method: 'POST'
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                location.reload();
+            } else {
+                alert('Failed to delete message: ' + (result.error || 'Unknown error'));
+            }
+        } catch (error) {
+            alert('Failed to delete message: ' + error.message);
+        }
+    }
+    
+    // Delete file (admin)
+    async function deleteFileAdmin(fileId) {
+        if (!confirm('Are you sure you want to delete this file?')) {
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/admin/file/${fileId}/delete`, {
+                method: 'POST'
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                location.reload();
+            } else {
+                alert('Failed to delete file: ' + (result.error || 'Unknown error'));
+            }
+        } catch (error) {
+            alert('Failed to delete file: ' + error.message);
+        }
+    }
+</script>
+
+<%- include('partials/footer') %>
